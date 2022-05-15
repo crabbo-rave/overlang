@@ -8,4 +8,7 @@
     <Compile Include="Eval.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FParsec" Version="1.1.1" />
+  </ItemGroup>
 </Project>
