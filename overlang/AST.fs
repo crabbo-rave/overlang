@@ -8,8 +8,10 @@ type Element =
     | ESym of symbol: string * position: Position
     | EId of name: string * position: Position
 
-type Function = { comment: string;
-                  code: Element[];
-                  position: Position }
+type Function = { name: string; // Function name, including the comment
+                  limit: int; // Overflow limit
+                  code: Element[]; // Function code
+                  position: Position // Position in file
+                }
 
 type Prog = Dictionary<string, Function>
