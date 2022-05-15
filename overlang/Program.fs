@@ -1,4 +1,7 @@
-﻿
+﻿open Parser
+open FParsec
+
 let main =
-    printfn "hi"
+    test pfloat "1.25"
+    test pfloat "1.25E 3"
     0
