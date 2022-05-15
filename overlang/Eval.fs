@@ -1,5 +1,11 @@
 module Eval
 
 open AST
+open System
 
-let eval (prog: Prog) = 0
+let evalFunction (f: Function) = 0
+
+let eval (prog: Prog) =
+    if prog.ContainsKey("main")
+    then evalFunction prog["main"]
+    else Exception "Failed to find function 'main'" |> raise
