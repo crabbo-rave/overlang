@@ -1,7 +1,12 @@
 module AST
 
 open System.Collections.Generic
-open FParsec;
+open System.Linq
+open FParsec
+
+let nextByOrder (elems: Dictionary<'K, 'T>) (k: 'K) =
+    let ordered = elems.Keys.OrderBy(fun x -> x).ToList()
+    elems[ordered[ordered.IndexOf k]]
 
 type Element = 
     | EConst of value: float * position: Position

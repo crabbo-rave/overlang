@@ -1,19 +1,8 @@
 module Eval
-
-open AST
 open System
-open System.Linq.Expressions
-type SysList<'T> = Collections.Generic.List<'T>
-
-type VStack = SysList<float>
-type FStack = SysList<Function>
-type Context = { vs: VStack; fs: FStack; prog: Prog }
-
-let countFuncs (ctx: Context) (name: string) =
-    ctx.fs |> Seq.fold
-        (fun x (y: Function) ->
-            x + (if y.name = name then 1 else 0))
-        0
+open AST
+open EvalTypes
+open EvalSym
 
 let rec evalElem (ctx: Context) (e: Element) =
     (
@@ -27,12 +16,10 @@ let rec evalElem (ctx: Context) (e: Element) =
     ) |> ctx.vs.Add
     ctx.vs[ctx.vs.Count - 1]
 
-and evalSymbol (ctx: Context) (e: Element) =
-    0.0
-
 and evalFunction (ctx: Context) (f: Function) =
     if countFuncs ctx f.name = f.limit
-    then 0.0
+    then // call next function
+        nextByOrder ctx.prog f.name |> evalFunction ctx
     else
         for e in f.code do
             evalElem ctx e |> ctx.vs.Add
@@ -40,7 +27,6 @@ and evalFunction (ctx: Context) (f: Function) =
         ctx.vs[ctx.vs.Count - 1]
 
 let eval (ctx: Context) (prog: Prog) = 
-
     if prog.ContainsKey("() main")
     then evalFunction ctx prog["() main"]
     else Exception "Failed to find function '() main'" |> raise
