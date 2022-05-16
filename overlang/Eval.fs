@@ -7,7 +7,7 @@ open EvalSym
 let rec evalElem (ctx: Context) (e: Element) =
     match e with
     | EConst (value, _) -> value |> ctx.vs.Add
-    | EId (name, position) ->
+    | EId (comment, name, position) ->
         if ctx.prog.ContainsKey name
         then evalFunction ctx ctx.prog[name]
         else printError $"Unknown identifier: '{name}'" position
