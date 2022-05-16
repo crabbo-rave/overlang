@@ -11,7 +11,7 @@ let nextByOrder (elems: Dictionary<'K, 'T>) (k: 'K) =
 type Element = 
     | EConst of value: float * position: Position
     | ESym of symbol: string * position: Position
-    | EId of name: string * position: Position
+    | EId of comment: string * name: string * position: Position
 
 type Function = { name: string; // Function name, including the comment
                   limit: int; // Overflow limit
