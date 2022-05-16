@@ -3,7 +3,7 @@
 open System
 open FParsec
 
-type UserState = unit // doesn't have to be unit, of course
+type UserState = unit 
 type Parser<'t> = Parser<'t, UserState>
 
 let test p str =
@@ -12,8 +12,13 @@ let test p str =
     | Failure(errorMsg, _, _) -> printfn "Failure: %s" errorMsg
 
 let ws = spaces
+let str = pstring
+let betweenStrings s1 s2 p = str s1 >>. p .>> str s2
 
+let strcomment : Parser<_> = many1 anyChar
 let oconst : Parser<_> = pfloat .>> ws 
+let ocomment : Parser<_> = strcomment |> betweenStrings "(" ")" 
 let oid : Parser<_> =
     let isID c = isLetter c || Char.IsPunctuation c 
     many1SatisfyL isID "identifier" .>> ws
+
