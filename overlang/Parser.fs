@@ -25,4 +25,8 @@ let oid : Parser<_> =
     let isID c = isLetter c || Char.IsPunctuation c && c <> '(' && c <> ')'
     ocomment >>. many1SatisfyL isID "identifier" .>> ws
                                         (* Work out how to get position *)
-let oconst : Parser<Element> = (pconst, (getPosition .>> pconst)) ||> EConst
+let oconst : Parser<Element> =
+    pipe2
+        pconst
+        (getPosition .>> pconst)
+        (fun x y -> EConst(x, y))

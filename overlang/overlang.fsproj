@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Parser.fs" />
     <Compile Include="AST.fs" />
+    <Compile Include="Parser.fs" />
     <Compile Include="EvalTypes.fs" />
     <Compile Include="EvalSym.fs" />
     <Compile Include="Eval.fs" />
