@@ -18,7 +18,7 @@ and evalFunction (ctx: Context) (f: Function) =
     if countFuncs ctx f.name = f.limit
     then // call next function
         nextByOrder ctx.prog f.name |> evalFunction ctx
-    else
+    else // evaluate this call
         ctx.fs.Add f
         
         for e in f.code do
