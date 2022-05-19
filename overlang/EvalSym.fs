@@ -78,5 +78,7 @@ let evalSymbol (ctx: Context) (e: string) (p: FParsec.Position) =
     | "⊽" ->
         ctx.AtLeast 2 p
         fromBoolean (nor (toBoolean ctx.Pop) (toBoolean ctx.Pop)) |> ctx.vs.Add
-    | _ -> failwith "Not Implemented"
+    | _ ->
+        printError $"Unkown symbol: '{e}'" p
+        exit 1
 

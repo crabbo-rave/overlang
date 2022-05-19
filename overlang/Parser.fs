@@ -15,18 +15,22 @@ let test p str =
 let ws = spaces
 let str = pstring
 let betweenStrings s1 s2 p = str s1 >>. p .>> str s2
+let withPosition p f = pipe2 p getPosition f 
 
 let strcomment : Parser<_> = 
     let validChar c = c <> '(' && c <> ')'
     manySatisfy validChar
+
 let pconst : Parser<_> = pfloat .>> ws 
+
 let ocomment : Parser<_> = strcomment |> betweenStrings "(" ")" 
-let oid : Parser<_> =
+
+let oid : Parser<Element> =
     let isID c = isLetter c || Char.IsPunctuation c && c <> '(' && c <> ')'
-    ocomment >>. many1SatisfyL isID "identifier" .>> ws
-                                        (* Work out how to get position *)
+    withPosition (ocomment >>. many1SatisfyL isID "identifier" .>> ws) (fun x y -> EConst(x, y))
+
 let oconst : Parser<Element> =
-    pipe2
-        pconst
-        (getPosition .>> pconst)
-        (fun x y -> EConst(x, y))
+    withPosition pconst (fun x y -> EConst(x, y))
+
+let parseCommentIndices : Parser<int list> =
+    
